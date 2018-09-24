@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
-	"github.com/tkanos/gonfig"
-	"gopkg.in/mgo.v2"
-	"gopkg.in/mgo.v2/bson"
 	"log"
 	"os"
 	"time"
+
+	"github.com/tkanos/gonfig"
+	"gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
 )
 
 type Configuration struct {
@@ -62,17 +63,6 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-
-		fmt.Println("Event:", result.Event)
-
-		fmt.Println(configuration.MongoDBHost)
-		t := time.Now()
-		fmt.Println(t.Format(time.RFC3339))
-		if len(os.Args) != 1 {
-			a := os.Args[1] // The value passed into the command line
-			fmt.Println("Orig", a)
-		}
-		fmt.Println("Creating a timelog.")
 
 	} else {
 		fmt.Println("No event data sent in")
