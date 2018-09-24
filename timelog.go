@@ -42,12 +42,12 @@ func main() {
 	} else {
 		// Display the results of the day...
 		result := []Task{}
-		n := time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 0, 0, 0, 0, time.UTC)
+		n := time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 0, 0, 0, 0, time.Local)
 
 		err := c.Find(bson.M{"time": bson.M{"$gte": n}}).All(&result)
-		fmt.Println("test")
 		for _, myEvent := range result {
-			fmt.Println(myEvent.Time.Format(time.RFC3339) + " " + myEvent.Event)
+			// 15:04  formats as 24 hour clock
+			fmt.Println(myEvent.Time.Format("15:04") + " " + myEvent.Event)
 		}
 
 		if err != nil {
