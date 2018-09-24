@@ -1,0 +1,6 @@
+{  
+    "MongoDBHost":"xxx.mlab.com:1234",
+    "Database":"timelog",
+    "AuthUserName":"xxxxxxx",
+    "AuthPassword":"xxxxxxx"
+ }
