@@ -11,12 +11,9 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-type Task struct {
-	Time  time.Time
-	Event string
-}
-
 func main() {
+
+	currentTime := time.Now() // The current time
 	configuration := timelogutil.Configuration{}
 
 	// TODO: something with the file name to cope with dev / prod! environments
@@ -31,27 +28,23 @@ func main() {
 	if len(os.Args) != 1 {
 		a := os.Args[1] // The value passed into the command line
 
-		err := c.Insert(&Task{time.Now(), a})
+		task := timelogutil.Task{Time: currentTime, Event: a}
+		err := c.Insert(&task)
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		result := Task{}
+		result := timelogutil.Task{}
 		err = c.Find(bson.M{"event": a}).One(&result)
 
 	} else {
 		// Display the results of the day...
-		result := []Task{}
-		n := time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 0, 0, 0, 0, time.Local)
+		n := time.Date(currentTime.Year(), currentTime.Month(), currentTime.Day(), 0, 0, 0, 0, time.Local)
 
-		err := c.Find(bson.M{"time": bson.M{"$gte": n}}).All(&result)
+		result := timelogutil.GetTasksSince(n)
 		for _, myEvent := range result {
 			// 15:04  formats as 24 hour clock
 			fmt.Println(myEvent.Time.Format("15:04") + " " + myEvent.Event)
-		}
-
-		if err != nil {
-			log.Fatal(err)
 		}
 	}
 }
