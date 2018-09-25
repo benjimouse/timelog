@@ -13,3 +13,5 @@
 
 # don't want my database details being uploaded.
 config/config.development.json
+
+.DS_Store
