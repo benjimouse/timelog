@@ -2,40 +2,24 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"time"
 
 	"github.com/benjimouse/timelogutil"
-	"github.com/tkanos/gonfig"
-	"gopkg.in/mgo.v2/bson"
 )
 
 func main() {
 
 	currentTime := time.Now() // The current time
-	configuration := timelogutil.Configuration{}
 
-	// TODO: something with the file name to cope with dev / prod! environments
-	gonfig.GetConf("config/config.development.json", &configuration)
-
-	session := timelogutil.GetMongoSession(configuration)
-	defer session.Close()
-
-	c := session.DB(configuration.Database).C("events")
-
-	// Really if you're not going to send in an argument then ...
 	if len(os.Args) != 1 {
 		a := os.Args[1] // The value passed into the command line
 
 		task := timelogutil.Task{Time: currentTime, Event: a}
-		err := c.Insert(&task)
-		if err != nil {
-			log.Fatal(err)
-		}
+		timelogutil.AddNewTask(task)
 
-		result := timelogutil.Task{}
-		err = c.Find(bson.M{"event": a}).One(&result)
+		//result := timelogutil.Task{}
+		//err = c.Find(bson.M{"event": a}).One(&result)
 
 	} else {
 		// Display the results of the day...
