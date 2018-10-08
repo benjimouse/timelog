@@ -9,4 +9,5 @@ https://github.com/benjimouse/timelogutil
 
 ## Running as a graphql server
 `go run graphql.go`
+
 ` curl -XPOST -d '{"query": "{ timelog }"}' localhost:8080/query`
